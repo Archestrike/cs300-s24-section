@@ -10,6 +10,6 @@ discussion: discussion.c
 	$(CC) $(FLAGS) $^ -o $@ -lm
 	
 clean:
-	rm -f tictactoe
+	rm -f tictactoe discussion
 
 .PHONY: clean
