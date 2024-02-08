@@ -14,8 +14,8 @@
  */
 int extract_numbers(char* input, int* row, int* col) {
     // Initialize variables
-    row = 0;
-    col = 0;
+    *row = 0;
+    *col = 0;
     
     // Extract the first number (row)
     char *token = strtok(input, "x");
@@ -38,8 +38,8 @@ int extract_numbers(char* input, int* row, int* col) {
         return -1;
     }
     else {
-        row = x;
-        col = y;
+        *row = x;
+        *col = y;
         return 0;
     }
 }
@@ -61,7 +61,8 @@ int main() {
     buffer[read(STDIN_FILENO, buffer, BUFSIZE - 1)] = '\0';
     extract_numbers(buffer, &row, &col);
     printf("The extracted numbers were %d and %d.\n", row, col);
-    printf("The extracted numbers should not be negative!\n");
-
+    if (row < 0 || col < 0) {
+        printf("The extracted numbers should not be negative!\n");
+    }
     return 0;
 }
