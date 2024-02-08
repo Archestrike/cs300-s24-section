@@ -1,6 +1,8 @@
 CC = gcc
 FLAGS = -ggdb3 -Wall -Wextra -Wshadow -std=gnu11 -fsanitize=address -Wno-unused-parameter 
 
+all: tictactoe discussion
+
 tictactoe: tictactoe.h tictactoe.c
 	$(CC) $(FLAGS) $^ -o $@ -lm
 
