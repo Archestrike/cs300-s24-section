@@ -14,7 +14,7 @@
  * the format RowxCol) Errors if both numbers are not inputted in this form or
  * if either is negative
  */
-int extract_numbers(char* input, int* row, int* col) {
+int extract_numbers(char* input, int* row, int* col, int dims) {
   // Extract the first number (row)
   char* token = strtok(input, "x");
   // Error check for incomplete string before calling atoi
@@ -32,7 +32,7 @@ int extract_numbers(char* input, int* row, int* col) {
   int y = atoi(token);
 
   // Error check to make sure both numbers are non-negative
-  if (x < 0 || y < 0) {
+  if (x < 0 || y < 0 || x >= dims || y >= dims) {
     return -1;
   } else {
     *row = x;
@@ -59,20 +59,20 @@ struct TTTCell* initialize_board(int* dims) {
     // Extract dimensions for board
     char buffer[BUFSIZE];
     buffer[read(STDIN_FILENO, buffer, BUFSIZE - 1)] = '\0';
-    dims = atoi(buffer);
+    *dims = atoi(buffer);
 
     // Error check for nonexistant board dimensions
-    if (dims <= 0) printf("Invalid board dimensions. Enter new dimensions.\n");
+    if (*dims <= 0) printf("Invalid board dimensions. Enter new dimensions.\n");
   }
 
   // Allocate space for the board (note the dereference for dims)
   struct TTTCell* board =
-      (struct TTTCell*)malloc(sizeof(struct TTTCell) * (*dims));
+      (struct TTTCell*)malloc(sizeof(struct TTTCell) * (*dims) * (*dims));
 
   // Initialize the board here!
-  for (int x = 0; x < dims; x++) {
-    for (int y = 0; y < dims; y++) {
-      board[(x * (*dims)) + y].symbol = X;
+  for (int x = 0; x < *dims; x++) {
+    for (int y = 0; y < *dims; y++) {
+      board[(x * (*dims)) + y].is_filled = 0;
     }
   }
 
@@ -94,6 +94,7 @@ void update_board(struct TTTCell* board, enum TTTSymbol curr_player, int dims) {
   int move_row = -1;
   int move_col = -1;
   int valid_move = -1;
+  int target;
   char buffer[BUFSIZE];
 
   // Extract move location
@@ -101,16 +102,18 @@ void update_board(struct TTTCell* board, enum TTTSymbol curr_player, int dims) {
     printf("Enter move location. For example, 0x0 is 0 row, 0 col.\n");
     int bytes_read = read(STDIN_FILENO, buffer, BUFSIZE - 1);
     buffer[bytes_read] = '\0';
-    valid_move = extract_numbers(buffer, &move_row, &move_col);
+    valid_move = extract_numbers(buffer, &move_row, &move_col, dims);
+    target = (move_row * dims) + move_col;
 
-    if (valid_move == -1) {
+    if (valid_move == -1 || board[target].is_filled) {
+      valid_move = -1;
       printf("Invalid move location. Enter new move.\n");
     }
   }
 
   // Update the board
-  board[(move_col * dims) + move_col].is_filled = 1;
-  board[(move_col * dims) + move_col].symbol = curr_player;
+  board[target].is_filled = 1;
+  board[target].symbol = curr_player;
 }
 
 /* Function main

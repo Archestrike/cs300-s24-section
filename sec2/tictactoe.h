@@ -27,7 +27,7 @@ struct TTTCell {
  * the format RowxCol) Errors if both numbers are not inputted in this form or
  * if either is negative
  */
-int extract_numbers(char* input, int* row, int* col);
+int extract_numbers(char* input, int* row, int* col, int dims);
 
 /* Function initialize_board
  *
