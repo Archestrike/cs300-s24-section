@@ -14,7 +14,7 @@ NOOPTFLAGS := -O0
 OPTFLAGS := -O1
 DEBUGFLAGS := -g
 
-all: msg q2 q2.s
+all: msg q2 q2.s mystery
 
 q%: q%.c
 	$(CC) $(NOOPTFLAGS) $(ASMFLAGS) $^ -o $@
@@ -22,8 +22,11 @@ q%: q%.c
 q%.s: q%.c
 	$(CC) $(NOOPTFLAGS) $(ASMFLAGS) $^ -S -o $@
 
+mystery: mystery.c
+	$(CC) $(NOOPTFLAGS) $(ASMFLAGS) $^ -o $@
+
 clean:
-	rm q2 q2.s
+	rm -f q2 q2.s mystery
 
 msg:
 ifeq ($(PROCESSOR_ARCHITECTURE),arm64)
