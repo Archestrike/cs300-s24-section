@@ -8,7 +8,7 @@ int main() {
   int fd = open("files/file1c.txt", O_RDWR | O_APPEND);
 
   // Write data to the file
-  char data[] = "8 bytes";
+  char data[] = "8 bytes\n";
   write(fd, data, 8);
 
   // Read data from the same location
