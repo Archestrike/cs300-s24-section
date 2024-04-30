@@ -1,4 +1,4 @@
-# Section 8: Looking at Systems from the Perspective of Rust!
+# Section 9: Looking at Systems from the Perspective of Rust!
 
 Each directory corresponds to a different section of the lab. There are a variety of `make` commands available in each directory:
 
