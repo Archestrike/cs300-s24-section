@@ -5,7 +5,7 @@
 #include <vector>
 
 typedef struct account {
-  int balance;
+  std::atomic_int balance;
   std::mutex balance_mtx;
 } account_t;
 

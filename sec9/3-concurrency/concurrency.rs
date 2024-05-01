@@ -52,7 +52,8 @@ fn update_account(
             drop(requests_guard);
 
             // Add the amount in the request to the account's balance
-            account_to_update.balance += current_request;
+            let mut balance_guard = account_to_update.balance.lock().unwrap();
+            *balance_guard += current_request;
         }
     }
 }
